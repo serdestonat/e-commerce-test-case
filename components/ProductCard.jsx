@@ -13,7 +13,7 @@ const ProductCard = ({ product }) => {
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-          onError={(e) => (e.target.src = "/images/placeholder.jpg")}
+          //   onError={(e) => (e.target.src = "/images/placeholder.jpg")}
         />
         {isOutOfStock && (
           <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-xs font-bold">
