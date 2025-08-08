@@ -14,8 +14,13 @@ const ProductCard = ({ product }) => {
           alt={product.name}
           className="w-full h-full object-cover"
           onError={(e) => {
-            e.target.src = "/images/placeholder.jpg";
-            e.target.onerror = null; // Sonsuz döngüyü engelle
+            // Fallback image kontrolü
+            const fallbackImage = "/images/placeholder.jpg";
+
+            // Eğer şu anki src zaten fallback değilse
+            if (e.target.src !== fallbackImage) {
+              e.target.src = fallbackImage;
+            }
           }}
         />
         {isOutOfStock && (
