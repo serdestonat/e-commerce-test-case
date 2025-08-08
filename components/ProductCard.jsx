@@ -1,33 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const ProductCard = ({ product }) => {
   const [selectedVariant, setSelectedVariant] = useState(0);
+  const [basePath, setBasePath] = useState("");
   const isOutOfStock = product.variants[selectedVariant].stock <= 0;
+
+  useEffect(() => {
+    // GitHub Pages için base path'i otomatik belirle
+    const path = window.location.pathname.split("/")[1] || "";
+    setBasePath(path ? `/${path}` : "");
+  }, []);
 
   return (
     <div className="max-w-xs rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-200 hover:border-gray-300">
       <div className="relative h-48 overflow-hidden">
         <img
-          src={product.image}
+          src={`${basePath}${product.image}`}
           alt={product.name}
           className="w-full h-full object-cover"
           onError={(e) => {
-            const imgElement = e.target;
-            const fallbackSrc = "/images/placeholder.jpg";
-
-            // Eğer fallback zaten yüklenmeye çalışılıyorsa veya yüklendiyse
-            if (
-              imgElement.src.endsWith(fallbackSrc) ||
-              imgElement.dataset.fallbackLoaded === "true"
-            ) {
-              return;
+            if (!e.target.src.includes("placeholder.jpg")) {
+              e.target.src = `${basePath}/images/placeholder.jpg`;
+              e.target.onerror = null;
             }
-
-            // Fallback yükle
-            imgElement.src = fallbackSrc;
-            imgElement.dataset.fallbackLoaded = "true";
           }}
         />
         {isOutOfStock && (
