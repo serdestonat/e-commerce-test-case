@@ -14,13 +14,20 @@ const ProductCard = ({ product }) => {
           alt={product.name}
           className="w-full h-full object-cover"
           onError={(e) => {
-            // Fallback image kontrolü
-            const fallbackImage = "/images/placeholder.jpg";
+            const imgElement = e.target;
+            const fallbackSrc = "/images/placeholder.jpg";
 
-            // Eğer şu anki src zaten fallback değilse
-            if (e.target.src !== fallbackImage) {
-              e.target.src = fallbackImage;
+            // Eğer fallback zaten yüklenmeye çalışılıyorsa veya yüklendiyse
+            if (
+              imgElement.src.endsWith(fallbackSrc) ||
+              imgElement.dataset.fallbackLoaded === "true"
+            ) {
+              return;
             }
+
+            // Fallback yükle
+            imgElement.src = fallbackSrc;
+            imgElement.dataset.fallbackLoaded = "true";
           }}
         />
         {isOutOfStock && (
